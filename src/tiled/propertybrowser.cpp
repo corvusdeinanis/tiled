@@ -1146,6 +1146,11 @@ void PropertyBrowser::applyMapObjectValue(PropertyId id, const QVariant &val)
     if (!command)
         return;
 
+    if (mMapDocument->selectedObjects().size() == 1) {
+        mDocument->undoStack()->push(command);
+        return;
+    }
+
     mDocument->undoStack()->beginMacro(command->text());
     mDocument->undoStack()->push(command);
 
@@ -1166,6 +1171,11 @@ void PropertyBrowser::applyLayerValue(PropertyId id, const QVariant &val)
     QUndoCommand *command = applyLayerValueTo(id, val, currentLayer);
     if (!command)
         return;
+
+    if (mMapDocument->selectedLayers().size() == 1) {
+        mDocument->undoStack()->push(command);
+        return;
+    }
 
     mDocument->undoStack()->beginMacro(command->text());
     mDocument->undoStack()->push(command);
